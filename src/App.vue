@@ -1,13 +1,19 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
+    app
+    <hr>
     <router-view/>
+    <router-link to="/money">123</router-link><br>
+    <router-link to="/label">123</router-link><br>
+    <router-link to="/statistic">123</router-link><br>
   </div>
 </template>
-
+<script lang="ts">
+  import { x } from './components/test.vue';
+export default {
+  
+}
+</script>
 <style lang="scss">
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
