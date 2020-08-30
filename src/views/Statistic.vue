@@ -1,5 +1,6 @@
 <template>
   <div>333333333333333
+    <Nav></Nav>
   </div>
 </template>
 
