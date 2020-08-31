@@ -1,14 +1,12 @@
 <template>
-  <div>1111111111111
-    <Nav></Nav>
+  <div class="nav-wrapper">
+    <Layout>Money.vue</Layout>
   </div>
 </template>
 
 <script lang="ts">
 export default{
-  name:'Money'
+  name:'money'
 }
 </script>
 
-<style scoped lang="scss">
-</style>

@@ -1,19 +1,11 @@
 <template>
-  <div>333333333333333
-    <Nav></Nav>
+  <div class="nav-wrapper">
+    <Layout>Statistic.vue</Layout>
   </div>
 </template>
 
-<script>
+<script lang="ts">
 export default{
-  name:'statistic',
-  data(){
-    return{}
-  },
-  methods:{
-  }
+  name:'statistic'
 }
 </script>
-
-<style scoped>
-</style>

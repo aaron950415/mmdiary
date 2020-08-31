@@ -1,14 +1,11 @@
 <template>
-  <div>2222222222222222222
-    <Nav></Nav>
+  <div class="nav-wrapper">
+    <Layout>Label.vue</Layout>
   </div>
 </template>
 
-<script>
+<script lang="ts">
 export default{
-  name:'Label'
+  name:'label'
 }
 </script>
-
-<style scoped>
-</style>

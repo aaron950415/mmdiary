@@ -3,6 +3,7 @@ import VueRouter, { RouteConfig } from 'vue-router';
 import Money from '@/views/Money.vue';
 import Label from '@/views/Label.vue';
 import Statistic from '@/views/Statistic.vue';
+import Notfound from '@/views/Notfound.vue';
 
 Vue.use(VueRouter);
 
@@ -25,6 +26,10 @@ Vue.use(VueRouter);
     component: Statistic
 
   },
+  {
+    path :'*',
+    component:Notfound
+  }
 ]
 
 const router = new VueRouter({
