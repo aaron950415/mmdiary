@@ -1,11 +1,11 @@
 <template>
   <div class="nav-wrapper">
-    <Layout>Label.vue</Layout>
+    <Layout>Labels.vue</Layout>
   </div>
 </template>
 
 <script lang="ts">
 export default{
-  name:'label'
+  name:'labels'
 }
 </script>

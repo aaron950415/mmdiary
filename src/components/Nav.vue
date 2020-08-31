@@ -1,13 +1,14 @@
 <template>
   <div class="nav">
 
-    <router-link to="/label">标签</router-link>|
-    <router-link to="/money">记账</router-link>|
-    <router-link to="/statistic">统计</router-link>
+    <router-link to="/labels"><icon name='labels'></icon>标签</router-link>|
+    <router-link to="/money"><icon name='money'></icon>记账</router-link>|
+    <router-link to="/statistic"><icon name='statistic'></icon>统计</router-link>
   </div>
 </template>
 
-<script>
+<script lang="ts">
+
 export default{
   name:'Nav',
   data(){
