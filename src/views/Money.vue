@@ -6,7 +6,8 @@
 
 <script lang="ts">
 export default{
-  name:'money'
+  name:'Money'
 }
 </script>
-
+<style lang="scss">
+</style>

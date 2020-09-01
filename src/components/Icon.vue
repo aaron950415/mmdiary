@@ -1,6 +1,9 @@
 <template>
   
-    <svg class="icon"><use :xlink:herf="'#'+name"></use></svg>
+    <svg class="icon">
+      <use :xlink:href="'#'+name"/>
+      
+    </svg>
   
 </template>
 
@@ -9,12 +12,7 @@ const importAll = requireContext => requireContext.keys().map(requireContext);
 importAll(require.context('../assets/icons',true, /\.svg$/));
 export default{
   props: ['name'],
-  name:'icon',
-  data(){
-    return{}
-  },
-  methods:{
-  }
+  name:'Icon'
 }
 </script>
 
