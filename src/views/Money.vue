@@ -1,9 +1,9 @@
 <template>
   <Layout class-prefix="layout">
+    <NumberPad></NumberPad>
+    <Types></Types>
     <Notes></Notes>
     <Tags></Tags>
-    <Types></Types>
-    <NumberPad></NumberPad>
   </Layout>
 </template>
 
@@ -19,9 +19,10 @@ export default {
   components: { NumberPad, Notes, Tags, Types },
 };
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
 .layout-content {
   display: flex;
   flex-direction: column-reverse;
+  height: 100vh;
 }
 </style>

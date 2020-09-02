@@ -1,6 +1,6 @@
 <template>
-  <div class="nav-wrapper" :class="classPreFix && `${classFix}-wrapper`">
-    <div class="content" :class="classPreFix && `${classFix}-content`">
+  <div class="layout-wrapper" :class="classPrefix && `${classPrefix}-wrapper`">
+    <div class="content" :class="classPrefix && `${classPrefix}-content`">
       <slot></slot>
     </div>
     <Nav></Nav>
@@ -9,13 +9,13 @@
 
 <script lang="ts">
 export default{
-  props:['classPreFix'],
+  props:['classPrefix'],
   name:'Layout'
 }
 </script>
 
 <style scoped lang="scss">
-  .nav-wrapper{
+  .layout-wrapper{
     display: flex;
     flex-direction: column;
     height: 100vh;

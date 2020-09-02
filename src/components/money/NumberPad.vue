@@ -1,5 +1,5 @@
 <template>
-  <div class="numberPad">
+  <div class="numberPad noselect">
     <div class="output">0</div>
     <div class="buttons">
       <button>1</button>

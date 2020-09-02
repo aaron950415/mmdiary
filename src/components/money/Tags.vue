@@ -24,6 +24,7 @@ export default {
   padding: 16px;
   display: flex;
   flex-direction: column-reverse;
+  flex-grow: 1;
   > .current {
     display: flex;
     flex-wrap: wrap;
