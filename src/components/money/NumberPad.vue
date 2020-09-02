@@ -5,11 +5,11 @@
       <button>1</button>
       <button>2</button>
       <button>2</button>
-      <button>Del</button>
+      <button @click="Del">Del</button>
       <button>4</button>
       <button>5</button>
       <button>6</button>
-      <button>Clear</button>
+      <button @click="Clear">Clear</button>
       <button>7</button>
       <button>8</button>
       <button>9</button>
@@ -32,6 +32,10 @@ export default class NumberPad extends Vue {
       return;
     }
     const input = (e.target as HTMLElement).innerHTML;
+
+    if(input==='Del' || this.output.length===16){
+      return;
+    }
     if (this.output === "0") {
       if ("0123456789".indexOf(input) >= 0) {
         this.output = input;
@@ -43,26 +47,15 @@ export default class NumberPad extends Vue {
     if (input === "." && this.output.indexOf(".") >= 0) {
       return;
     } else {
-      if (input === "Del") {
-        this.remove();
-        return;
-      } else if (input === "Clear") {
-        this.clear();
-        return;
-      }
-      if (input === "OK") {
-        this.OK();
-        return;
-      }
       this.output += input;
     }
     return;
   }
-  clear() {
+  Clear() {
     this.output = "0";
   }
-  remove() {
-    if (this.output.length !== 1) this.output = this.output.slice(0, -1);
+  Del() {
+    this.output.length !== 1 ? this.output = this.output.slice(0, -1) : this.output='0';
   }
   OK() {
     console.log("OK");
