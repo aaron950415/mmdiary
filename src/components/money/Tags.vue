@@ -13,9 +13,9 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "Tags",
-};
+export default{
+  name:'Tags'
+}
 </script>
 
 <style lang="scss" scoped>
