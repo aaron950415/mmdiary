@@ -27,7 +27,7 @@ export default{
 </script>
 
 <style lang="scss" scoped>
-  @import '~@/assets/style/helper.scss';
+@import "~@/assets/style/helper.scss";
   .numberPad{
     .output{
       @extend %clearFix;
@@ -37,15 +37,15 @@ export default{
       padding: 9px 16px;
       text-align:right;
     }
-    .button{
+    .buttons{
       @extend %clearFix;
       > button{
         width: 25%;
-        height: 64%;
+        height: 64px;
         float: left;
         background:transparent;
         border:none;
-        &.ok{
+        &.OK{
           height: 64*2px;
           float:right;
         }
@@ -55,6 +55,21 @@ export default{
         $bg:#f2f2f2;
         &:nth-child(2),&:nth-child(5){
           background: darken($bg,4*2%);
+        }
+        &:nth-child(3), &:nth-child(6), &:nth-child(9) {
+          background: darken($bg, 4*2%);
+        }
+        &:nth-child(4), &:nth-child(7), &:nth-child(10) {
+          background: darken($bg, 4*3%);
+        }
+        &:nth-child(8), &:nth-child(11), &:nth-child(13) {
+          background: darken($bg, 4*4%);
+        }
+        &:nth-child(14) {
+          background: darken($bg, 4*5%);
+        }
+        &:nth-child(12) {
+          background: darken($bg, 4*6%);
         }
       }
     }
