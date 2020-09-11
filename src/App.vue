@@ -13,7 +13,5 @@ export default{
 <style lang="scss">
   @import "~@/assets/style/helper.scss";
   @import "~@/assets/style/reset.scss";
-  #app{
-background:#e6e5e8;
-  }
+
 </style>

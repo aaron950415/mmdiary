@@ -3,7 +3,7 @@
   <Layout>
     <ol class="tags">
       <li v-for="tag in tags" :key="tag.id">
-        <span>{{tags.name}}</span>
+        <span>{{tag.name}}</span>
         <Icon name="right"></Icon>
       </li>
     </ol>
@@ -18,7 +18,6 @@
 import { Vue, Component, Watch } from "vue-property-decorator";
 import tagListModel from "@/models/tagListModel.ts";
 tagListModel.fetch();
-console.log(tagListModel.data)
 @Component
 export default class Labels extends Vue {
   tags = tagListModel.data;
