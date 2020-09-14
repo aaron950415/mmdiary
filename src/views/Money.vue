@@ -19,6 +19,7 @@ import tagListModel from '@/models/tagListModel.ts'
 const recordList=recorderListModel.fetch()
 tagListModel.fetch()
 const tagList=tagListModel.data
+console.log(tagList)
 @Component({
   components: { NumberPad, Notes, Tags, Types },
 })
@@ -43,7 +44,6 @@ export default class Money extends Vue {
   @Watch('recordList')
   onRecordListChange(){
     recorderListModel.save(this.recordList)
-    console.log(this.recordList)
   }
 }
 </script>

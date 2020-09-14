@@ -6,9 +6,9 @@
       <span class="rightIcon"></span>
     </div>
     <div class="form-wrapper">
-    <Notes field-name="标签名" placeholder="请输入标签名"></Notes>
+      <Notes :value="tag.name" @update:value="updateTag" field-name="标签名" placeholder="请输入标签名"></Notes>
     </div>
-        <div class="button-wrapper">
+    <div class="button-wrapper">
       <Button>删除标签</Button>
     </div>
   </div>
@@ -23,22 +23,31 @@ import Notes from "@/components/money/Notes.vue";
   components: { Notes },
 })
 export default class Editlabel extends Vue {
+  tag?: {
+    id: string;
+    name: string;
+  } = undefined;
   created() {
     const id = this.$route.params.id;
     tagListModel.fetch();
     const tags = tagListModel.data;
     const tag = tags.filter((t) => t.id === id)[0];
     if (tag) {
-      console.log(tag);
+      this.tag = tag;
     } else {
       this.$router.replace("/404");
+    }
+  }
+  updateTag(name: string) {
+    if (this.tag) {
+      tagListModel.update(this.tag.id, name);
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.navBar{
+.navBar {
   text-align: center;
   font-size: 16px;
   padding: 12px 16px;
@@ -46,24 +55,21 @@ export default class Editlabel extends Vue {
   align-items: center;
   justify-content: space-between;
   background-color: white;
-  >.tittle{
-    
-  }
-  >.leftIcon{
-width: 24px;
-height: 24px;
-  }
-  >.rightIcon{
-width: 24px;
-height: 24px;
-  }
 
+  > .leftIcon {
+    width: 24px;
+    height: 24px;
+  }
+  > .rightIcon {
+    width: 24px;
+    height: 24px;
+  }
 }
-.form-wrapper{
-      background-color: white;
-      margin-top: 8px;
+.form-wrapper {
+  background-color: white;
+  margin-top: 8px;
 }
-.button-wrapper{
+.button-wrapper {
   text-align: center;
   padding: 16px;
   margin-top: 28px;
