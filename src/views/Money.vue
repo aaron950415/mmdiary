@@ -2,7 +2,7 @@
   <Layout class-prefix="layout">
     <NumberPad :value.sync="record.amount" @submit="saveRecord"></NumberPad>
     <Types :value.sync="record.type"></Types>
-    <Notes @update:value="onUpdateNotes"></Notes>
+    <Notes field-name="备注" @update:value="onUpdateNotes" placeholder="在这输入备注"></Notes>
     <Tags :data-source.sync="tags" @update:value="onUpdateTags"></Tags>
   </Layout>
 </template>
@@ -17,7 +17,8 @@ import { Vue, Component, Watch } from "vue-property-decorator";
 import recorderListModel from '@/models/recorderList.ts';
 import tagListModel from '@/models/tagListModel.ts'
 const recordList=recorderListModel.fetch()
-const tagList=tagListModel.fetch()
+tagListModel.fetch()
+const tagList=tagListModel.data
 @Component({
   components: { NumberPad, Notes, Tags, Types },
 })
