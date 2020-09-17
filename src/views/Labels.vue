@@ -14,33 +14,33 @@
 </template>
 
 <script lang="ts">
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { Vue, Component, Watch } from "vue-property-decorator";
-import tagListModel from "@/models/tagListModel.ts";
-tagListModel.fetch();
-@Component
-export default class Labels extends Vue {
-  tags = tagListModel.data;
-  
+import TagHelper from "@/mixins/TagHelper.ts";
+import { Component } from "vue-property-decorator";
+import Button from "@/components/Button.vue";
+import { mixins } from "vue-class-component";
+@Component({
+  components: { Button },
+})
+export default class Labels extends mixins(TagHelper) {
+  get tags() {
+    return this.$store.state.tagList;
+  }
+  beforeCreate() {
+    this.$store.commit("fetchTags");
+  }
   createTag() {
     const name = window.prompt("标签名是什么？");
-    if (name) {
-      try{
-        tagListModel.create(name);
-      }catch(Error){
-        if(Error.message ==="duplicated"){
-          window.alert('标签名重复')
-        }else if(Error.message ==="success"){
-          window.alert('创建成功')
-        }
-      }
+    if (!name) {
+      return window.prompt("标签名不能为空");
     }
+    this.$store.commit("createTag", name);
   }
 }
 </script>
 
 <style lang="scss" scope>
 .tags {
+  margin-top: 20px;
   background: white;
   font-size: 16px;
   padding: 0 16px;

@@ -1,47 +1,57 @@
 <template>
-  <div>
+  <Layout>
     <div class="navBar">
-      <Icon class="leftIcon" name="left"></Icon>
+      <Icon class="leftIcon" name="left" @click.native="goBack"></Icon>
       <span class="tittle">标签编辑</span>
       <span class="rightIcon"></span>
     </div>
     <div class="form-wrapper">
-      <Notes :value="tag.name" @update:value="updateTag" field-name="标签名" placeholder="请输入标签名"></Notes>
+      <Notes :value="tag.name" @update:value="update"  field-name="标签名" placeholder="请输入标签名"></Notes>
     </div>
     <div class="button-wrapper">
-      <Button>删除标签</Button>
+      <Button @click="remove">删除标签</Button>
     </div>
-  </div>
+  </Layout>
 </template>
 
 <script lang="ts">
-import tagListModel from "@/models/tagListModel";
 import { Vue, Component } from "vue-property-decorator";
 import Notes from "@/components/money/Notes.vue";
+import Button from "@/components/money/Button.vue";
+
 
 @Component({
-  components: { Notes },
+  components: { Notes,Button },
 })
-export default class Editlabel extends Vue {
-  tag?: {
-    id: string;
-    name: string;
-  } = undefined;
+export default class Editlabel extends Vue {  
+  get tag(){
+      return this.$store.state.currentTag
+    }
   created() {
-    const id = this.$route.params.id;
-    tagListModel.fetch();
-    const tags = tagListModel.data;
-    const tag = tags.filter((t) => t.id === id)[0];
-    if (tag) {
-      this.tag = tag;
-    } else {
+    const id=this.$route.params.id
+    this.$store.commit('setCurrentTag',id)
+    if (!this.tag) {
       this.$router.replace("/404");
     }
   }
-  updateTag(name: string) {
+  update(name: string) {
     if (this.tag) {
-      tagListModel.update(this.tag.id, name);
+    this.$store.commit('updateTag',this.tag.id, name);
     }
+  }
+
+  remove() {
+    if (this.tag) {
+      if (this.$store.commit('removeTag',this.tag.id)) {
+        this.goBack();
+      }else{
+        window.alert('删除失败');
+      }
+    }
+  }
+
+  goBack() {
+    this.$router.back();
   }
 }
 </script>

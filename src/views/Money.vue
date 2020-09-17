@@ -3,7 +3,7 @@
     <NumberPad :value.sync="record.amount" @submit="saveRecord"></NumberPad>
     <Types :value.sync="record.type"></Types>
     <Notes class="Notes" field-name="备注" @update:value="onUpdateNotes" placeholder="在这输入备注"></Notes>
-    <Tags :data-source.sync="tags" @update:value="onUpdateTags"></Tags>
+    <Tags></Tags>
   </Layout>
 </template>
 
@@ -13,37 +13,35 @@ import Tags from "@/components/money/Tags.vue";
 import NumberPad from "@/components/money/NumberPad.vue";
 import Notes from "@/components/money/Notes.vue";
 import Types from "@/components/money/Types.vue";
-import { Vue, Component, Watch } from "vue-property-decorator";
-import recorderListModel from '@/models/recorderList.ts';
-import tagListModel from '@/models/tagListModel.ts'
-const recordList=recorderListModel.fetch()
-tagListModel.fetch()
-const tagList=tagListModel.data
-console.log(tagList)
+import { Vue, Component } from "vue-property-decorator";
+
 @Component({
   components: { NumberPad, Notes, Tags, Types },
 })
 export default class Money extends Vue {
-  tags = tagList;
-  recordList: RecordItem[]=recordList;
   record: RecordItem = {
     tags: [],
     notes: "",
     type: "-",
     amount: 0,
   };
-  onUpdateTags(value: string[]) {this.record.tags=value}
-  onUpdateNotes(value: string) {this.record.notes=value}
-  onUpdateTypes(value: string) {this.record.type=value}
-  onUpdateAmount(value: number) {this.record.amount=value}
-  saveRecord(){
-    const record2: RecordItem=recorderListModel.clone(this.record)
-    record2.createAt= new Date();
-    this.recordList.push(record2)
+  get recordList() {
+    return this.$store.state.recordList;
   }
-  @Watch('recordList')
-  onRecordListChange(){
-    recorderListModel.save(this.recordList)
+  created() {
+    this.$store.commit("fetchRecords");
+  }
+  onUpdateNotes(value: string) {
+    this.record.notes = value;
+  }
+  onUpdateTypes(value: string) {
+    this.record.type = value;
+  }
+  onUpdateAmount(value: number) {
+    this.record.amount = value;
+  }
+  saveRecord() {
+    this.$store.commit("createRecord", this.record);
   }
 }
 </script>
@@ -55,8 +53,8 @@ export default class Money extends Vue {
   flex-direction: column-reverse;
   height: 100vh;
 }
-.Notes{
-      background-color: #f5f5f5;
-      padding: 12px 0;
+.Notes {
+  background-color: #f5f5f5;
+  padding: 12px 0;
 }
 </style>

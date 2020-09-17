@@ -5,3 +5,21 @@ type RecordItem = {
     amount: number | undefined;
     createAt?: Date;
   };
+  type Tag = {
+    id: string;
+    name: string;
+  };
+  type TagListModel = {
+    data: Tag[];
+    fetch: () => Tag[];
+    create: (name: string) => string;
+    update: (id: string, name: string) => "success" | "Not Found" | string;
+    save: () => void;
+    remove: (id: string) => boolean;
+  };
+
+  interface Window{
+    tagList: Tag[];
+    createTag: (name: string) => void;
+    
+  }

@@ -1,11 +1,11 @@
 <template>
   <div class="tags noselect">
     <div class="new">
-      <button @click="create">新增标签</button>
+      <button @click="createTag">新增标签</button>
     </div>
     <ul class="current">
       <li
-        v-for="tags in dataSource"
+        v-for="tags in tagList"
         :key="tags.id"
         :class="{selected: selectedTags.indexOf(tags)>=0}"
         @click="toggle(tags)"
@@ -15,11 +15,18 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from "vue-property-decorator";
+import { TagHelper } from '@/mixins/TagHelper';
+import { mixins } from 'vue-class-component';
+import { Component } from "vue-property-decorator";
 @Component
-export default class NumberPad extends Vue {
-  @Prop() readonly dataSource: string[] | undefined;
+export default class NumberPad extends mixins(TagHelper){
   selectedTags: string[] = [];
+  get     tagList() {
+      return this.$store.state.tagList;
+    }
+  created() {
+    this.$store.commit('fetchTags')
+  }
   toggle(tags: string) {
     const index = this.selectedTags.indexOf(tags);
     if (index >= 0) {
@@ -27,17 +34,7 @@ export default class NumberPad extends Vue {
     } else {
       this.selectedTags.push(tags);
     }
-    this.$emit('update:value',this.selectedTags)
-  }
-  create() {
-    const name = window.prompt("请输入标签名");
-    if (name === "") {
-      window.alert("标签名不能为空");
-    } else {
-      if (this.dataSource) {
-        this.$emit("update:dataSource", [...this.dataSource, name]);
-      }
-    }
+    this.$emit("update:value", this.selectedTags);
   }
 }
 </script>
