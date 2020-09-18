@@ -1,12 +1,12 @@
 <template>
-  <Layout>
+  <Layout class="noselect">
     <div class="navBar">
       <Icon class="leftIcon" name="left" @click.native="goBack"></Icon>
       <span class="tittle">标签编辑</span>
       <span class="rightIcon"></span>
     </div>
     <div class="form-wrapper">
-      <Notes :value="tag.name" @update:value="update"  field-name="标签名" placeholder="请输入标签名"></Notes>
+      <Notes :value="tag.name" @update:value="update" field-name="标签名" placeholder="请输入标签名"></Notes>
     </div>
     <div class="button-wrapper">
       <Button @click="remove">删除标签</Button>
@@ -17,36 +17,31 @@
 <script lang="ts">
 import { Vue, Component } from "vue-property-decorator";
 import Notes from "@/components/money/Notes.vue";
-import Button from "@/components/money/Button.vue";
-
 
 @Component({
-  components: { Notes,Button },
+  components: { Notes },
 })
-export default class Editlabel extends Vue {  
-  get tag(){
-      return this.$store.state.currentTag
-    }
+export default class Editlabel extends Vue {
+  get tag() {
+    return this.$store.state.currentTag;
+  }
   created() {
-    const id=this.$route.params.id
-    this.$store.commit('setCurrentTag',id)
+    this.$store.commit("fetchTags");
+    const id = this.$route.params.id;
+    this.$store.commit("setCurrentTag", id);
     if (!this.tag) {
       this.$router.replace("/404");
     }
   }
   update(name: string) {
     if (this.tag) {
-    this.$store.commit('updateTag',this.tag.id, name);
+      this.$store.commit("updateTag", { id: this.tag.id, name });
     }
   }
 
   remove() {
     if (this.tag) {
-      if (this.$store.commit('removeTag',this.tag.id)) {
-        this.goBack();
-      }else{
-        window.alert('删除失败');
-      }
+      this.$store.commit("removeTag", this.tag.id);
     }
   }
 

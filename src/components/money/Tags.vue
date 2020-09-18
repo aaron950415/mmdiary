@@ -15,17 +15,17 @@
 </template>
 
 <script lang="ts">
-import { TagHelper } from '@/mixins/TagHelper';
-import { mixins } from 'vue-class-component';
+import { TagHelper } from "@/mixins/TagHelper";
+import { mixins } from "vue-class-component";
 import { Component } from "vue-property-decorator";
 @Component
-export default class NumberPad extends mixins(TagHelper){
+export default class NumberPad extends mixins(TagHelper) {
   selectedTags: string[] = [];
-  get     tagList() {
-      return this.$store.state.tagList;
-    }
+  get tagList() {
+    return this.$store.state.tagList;
+  }
   created() {
-    this.$store.commit('fetchTags')
+    this.$store.commit("fetchTags");
   }
   toggle(tags: string) {
     const index = this.selectedTags.indexOf(tags);

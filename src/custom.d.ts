@@ -3,7 +3,7 @@ type RecordItem = {
     notes: string | undefined;
     type: string | undefined;
     amount: number | undefined;
-    createAt?: Date;
+    createAt?: string;
   };
   type Tag = {
     id: string;
@@ -23,3 +23,8 @@ type RecordItem = {
     createTag: (name: string) => void;
     
   }
+  type RootState = {
+    recordList: RecordItem[];
+    tagList: Tag[];
+    currentTag?: Tag;
+  };

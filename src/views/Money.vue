@@ -1,9 +1,9 @@
 <template>
-  <Layout class-prefix="layout">
+  <Layout class-prefix="layout" class="noselect">
     <NumberPad :value.sync="record.amount" @submit="saveRecord"></NumberPad>
-    <Types :value.sync="record.type"></Types>
-    <Notes class="Notes" field-name="备注" @update:value="onUpdateNotes" placeholder="在这输入备注"></Notes>
-    <Tags></Tags>
+    <Tabs :value.sync="record.type" :data-source="recordTypeList"></Tabs>
+    <Notes :value.sync="record.notes" class="Notes" field-name="备注" placeholder="在这输入备注"></Notes>
+    <Tags :value.sync="record.tags"></Tags>
   </Layout>
 </template>
 
@@ -12,43 +12,38 @@
 import Tags from "@/components/money/Tags.vue";
 import NumberPad from "@/components/money/NumberPad.vue";
 import Notes from "@/components/money/Notes.vue";
-import Types from "@/components/money/Types.vue";
+import Tabs from "@/components/statistic/Tabs.vue";
 import { Vue, Component } from "vue-property-decorator";
+import recordTypeList from '@/constants/recordTypeList';
 
 @Component({
-  components: { NumberPad, Notes, Tags, Types },
+  components: { NumberPad, Notes, Tags, Tabs },
 })
 export default class Money extends Vue {
+  get recordList(){
+    return this.$store.state.recordList
+  }
+  recordTypeList =recordTypeList
   record: RecordItem = {
     tags: [],
     notes: "",
     type: "-",
     amount: 0,
   };
-  get recordList() {
-    return this.$store.state.recordList;
-  }
   created() {
     this.$store.commit("fetchRecords");
   }
-  onUpdateNotes(value: string) {
-    this.record.notes = value;
-  }
-  onUpdateTypes(value: string) {
-    this.record.type = value;
-  }
-  onUpdateAmount(value: number) {
-    this.record.amount = value;
-  }
+
   saveRecord() {
+    console.log(this.record)
     this.$store.commit("createRecord", this.record);
   }
 }
 </script>
 
 
-<style lang="scss">
-.layout-content {
+<style lang="scss" scoped>
+::v-deep .layout-content {
   display: flex;
   flex-direction: column-reverse;
   height: 100vh;

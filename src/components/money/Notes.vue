@@ -8,7 +8,7 @@
 </template>
 
 <script lang="ts">
-import { Vue,Component, Watch, Prop } from "vue-property-decorator";
+import { Vue,Component, Prop } from "vue-property-decorator";
 @Component
 export default class Notes extends Vue{
  @Prop({default:''}) value!: string
