@@ -1,15 +1,16 @@
 <template>
   <Layout class="noselect">
     <Tabs class-prefix="type" :data-source="typeList" :value.sync="type"></Tabs>
-    <Tabs class-prefix="interval" :data-source="intervalList" :value.sync="interval"></Tabs>
     <ol>
-      <li v-for="(group,index) in result" :key="index">
-        <h3 class="tittle">{{group.tittle}}</h3>
+      <li v-for="(group, index) in groupList" :key="index">
+        <h3 class="tittle">
+          {{ beautify(group.tittle) }} <span>￥{{ group.total }}</span>
+        </h3>
         <ol>
-          <li class="record" v-for="item in group" :key="item.id">
-            <span>{{tagString(item.tags)}}</span>
-            <span class="notes">{{item.notes}}</span>
-            <span>￥{{item.amount}}</span>
+          <li class="record" v-for="item in group.items" :key="item.id">
+            <span>{{ tagString(item.tags) }}</span>
+            <span class="notes">{{ item.notes }}</span>
+            <span>￥{{ item.amount }}</span>
           </li>
         </ol>
       </li>
@@ -19,36 +20,88 @@
 
 <script lang="ts">
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
+/* eslint-disable @typescript-eslint/member-delimiter-style */
 import { Vue, Component } from "vue-property-decorator";
 import Tabs from "@/components/statistic/Tabs.vue";
-import intervalList from "@/constants/intervalList";
 import recordTypeList from "@/constants/recordTypeList";
+import dayjs from "dayjs";
+import clone from "@/lib/clone";
 @Component({
   components: { Tabs },
 })
 export default class Statistic2 extends Vue {
   tagString(tags: Tag[]) {
-    return tags.length===0 ? 'none' : tags.join(",");
+    if(tags.length===0){
+      return "没有标签"
+    }else{
+    const name =[];
+      for(let i=0;i<tags.length;i++){
+        name[i]=tags[i].name
+      }
+    return  name.join(",")
+    }
   }
+  beautify(string: string) {
+    const day = dayjs(string);
+    const now = dayjs();
+    if (day.isSame(now, "day")) {
+      return "今天";
+    } else if (day.isSame(now.subtract(1, "day"), "day")) {
+      return "昨天";
+    } else if (day.isSame(now.subtract(2, "day"), "day")) {
+      return "前天";
+    } else if (day.isSame(now, "year")) {
+      return day.format("MM月D日");
+    } else {
+      return day.format("YYYY年M月D日");
+    }
+  }
+
   get recordList() {
     return (this.$store.state as RootState).recordList;
   }
-  get result() {
-    const { recordList } = this;
-    type HashTableValue = { tittle: string; items: RecordItem[] };
-
-    const hashTable: { [key: string]: HashTableValue } = {};
-    for (let i = 0; i < recordList.length; i++) {
-      const [date, time] = recordList[i].createAt!.split("T");
-      hashTable[date] = hashTable[date] || { tittle: date, items: [] };
-      hashTable[date].items.push(recordList[i]);
+  get groupList() {
+    const recordList = this.recordList;
+    if (recordList.length === 0) {
+      return [];
     }
-    return hashTable;
+
+    const newList = clone(recordList)
+      .filter((r) => r.type === this.type)
+      .sort(
+        (a, b) => dayjs(b.createAt).valueOf() - dayjs(a.createAt).valueOf()
+      );
+      if(newList.length===0){
+return []
+      }
+    type Result = { tittle: string; total?: number; items: RecordItem[] }[];
+    const result: Result = [
+      {
+        tittle: dayjs(newList[0].createAt).format("YYYY-MM-DD"),
+        items: [newList[0]],
+      },
+    ];
+    for (let i = 1; i < newList.length; i++) {
+      const current = newList[i];
+      const last = result[result.length - 1];
+      if (dayjs(last.tittle).isSame(dayjs(current.createAt), "day")) {
+        last.items.push(current);
+      } else {
+        result.push({
+          tittle: dayjs(current.createAt).format("YYYY-MM-DD"),
+          items: [current],
+        });
+      }
+    }
+    result.map((group) => {
+      group.total = group.items.reduce((sum, item) => {
+        return sum + item.amount;
+      }, 0);
+    });
+    return result;
   }
   type = "-";
-  interval = "day";
   typeList = recordTypeList;
-  intervalList = intervalList;
 
   beforeCreate() {
     this.$store.commit("fetchRecords");
@@ -58,9 +111,9 @@ export default class Statistic2 extends Vue {
 
 <style lang="scss" scoped>
 ::v-deep .type-tabs-item {
-  background: white;
+  background: #c4c4c4;
   &.selected {
-    background: #c4c4c4;
+    background: white;
     &::after {
       display: none;
     }
@@ -83,7 +136,7 @@ export default class Statistic2 extends Vue {
 .record {
   background: white;
   @extend %item;
-  >.notes{
+  > .notes {
     margin-left: 16px;
     margin-right: auto;
     color: #999;
