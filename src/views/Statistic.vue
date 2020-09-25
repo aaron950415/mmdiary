@@ -1,7 +1,7 @@
 <template>
   <Layout class="noselect">
     <Tabs class-prefix="type" :data-source="typeList" :value.sync="type"></Tabs>
-    <ol>
+    <ol v-if="groupList.length>0">
       <li v-for="(group, index) in groupList" :key="index">
         <h3 class="tittle">
           {{ beautify(group.tittle) }} <span>￥{{ group.total }}</span>
@@ -15,6 +15,9 @@
         </ol>
       </li>
     </ol>
+    <div v-else class="noResult">
+      目前没有相关记录
+    </div>
   </Layout>
 </template>
 
@@ -34,11 +37,7 @@ export default class Statistic2 extends Vue {
     if(tags.length===0){
       return "没有标签"
     }else{
-    const name =[];
-      for(let i=0;i<tags.length;i++){
-        name[i]=tags[i].name
-      }
-    return  name.join(",")
+    return  tags.map(t=>t.name).join(",")
     }
   }
   beautify(string: string) {
@@ -141,5 +140,9 @@ return []
     margin-right: auto;
     color: #999;
   }
+}
+.noResult{
+  padding: 16px;
+  text-align:center;
 }
 </style>

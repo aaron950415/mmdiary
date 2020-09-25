@@ -2,13 +2,14 @@ import clone from "@/lib/clone";
 import Vue from "vue";
 import Vuex from "vuex";
 import createId from "@/lib/idCreate.ts";
-import router from '@/router';
+import router from "@/router";
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
   state: {
     //data
     recordList: [],
+    createRecordError:  null,
     tagList: [],
     currentTag: undefined,
   } as RootState,
@@ -18,7 +19,7 @@ const store = new Vuex.Store({
       state.recordList = JSON.parse(localStorage.getItem("recordList") || "[]");
     },
     createRecord(state, record: RecordItem) {
-      const record2: RecordItem = clone(record);
+      const record2 = clone(record);
       record2.createAt = new Date().toISOString();
       state.recordList.push(record2);
       store.commit("saveRecords");
@@ -31,6 +32,12 @@ const store = new Vuex.Store({
     },
     fetchTags(state) {
       state.tagList = JSON.parse(localStorage.getItem("tagList") || "[]");
+      if (!state.tagList || state.tagList.length === 0) {
+        store.commit("createTag", "衣");
+        store.commit("createTag", "食");
+        store.commit("createTag", "住");
+        store.commit("createTag", "行");
+      }
     },
     setCurrentTag(state, id: string) {
       state.currentTag = state.tagList.filter((t) => t.id === id)[0];
@@ -51,21 +58,23 @@ const store = new Vuex.Store({
           index = i;
           break;
         }
-      }if(index>=0)
-{      state.tagList.splice(index, 1);
-      store.commit("saveTags");
-      window.alert( "删除成功")
-      router.back();}else{
-        window.alert( "删除失败")
+      }
+      if (index >= 0) {
+        state.tagList.splice(index, 1);
+        store.commit("saveTags");
+        window.alert("删除成功");
+        router.back();
+      } else {
+        window.alert("删除失败");
       }
     },
-    updateTag(state, payload: {id: string; name: string}) {
-      const {id,name}=payload;
+    updateTag(state, payload: { id: string; name: string }) {
+      const { id, name } = payload;
       const idList = state.tagList.map((item) => item.id);
       if (idList.indexOf(id) >= 0) {
         const names = state.tagList.map((item) => item.name);
         if (names.indexOf(name) >= 0) {
-          window.alert( "duplicated")
+          window.alert("duplicated");
         } else {
           const tag = state.tagList.filter((item) => item.id === id)[0];
           tag.name = name;
