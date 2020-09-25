@@ -46,6 +46,7 @@ const store = new Vuex.Store({
       const names = state.tagList.map((item) => item.name);
       if (names.indexOf(name) >= 0) {
         window.alert("duplicated");
+        return
       }
       const id = createId().toString();
       state.tagList.push({ id, name: name });
