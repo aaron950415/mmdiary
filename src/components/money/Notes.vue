@@ -2,7 +2,7 @@
  <div>
 <label class="notes">
     <span class="name">{{this.fieldName}}</span>
-    <input type="text" :value="value" @input="onValueChanged($event.target.value)" :placeholder="this.placeholder">
+    <input type="text" :value="value" @blur="onValueChanged($event.target.value)" :placeholder="this.placeholder">
 </label>
  </div>
 </template>
