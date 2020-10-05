@@ -61,7 +61,7 @@ export default class Money extends Vue {
 ::v-deep .layout-content {
   display: flex;
   flex-direction: column-reverse;
-  max-height: 100vh;
+  min-height: 100vh;
 }
 ::v-deep .Notes {
   background-color: #f5f5f5;
