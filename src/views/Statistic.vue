@@ -4,7 +4,7 @@
     <ol v-if="groupList.length>0">
       <li v-for="(group, index) in groupList" :key="index">
         <h3 class="tittle">
-          {{ beautify(group.tittle) }} <span>￥{{ group.total }}</span>
+          {{ beautify(group.tittle) }} <span>总计￥{{ group.total }}</span>
         </h3>
         <ol>
           <li class="record" v-for="item in group.items" :key="item.id">
@@ -112,7 +112,7 @@ return []
 ::v-deep .type-tabs-item {
   background: #c4c4c4;
   &.selected {
-    background: white;
+    background: #dceb11;
     &::after {
       display: none;
     }

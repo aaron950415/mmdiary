@@ -1,14 +1,13 @@
 <template>
   <Layout class-prefix="layout" class="noselect">
     <NumberPad :value.sync="record.amount" @submit="saveRecord"></NumberPad>
-    <Tabs :value.sync="record.type" :data-source="recordTypeList"></Tabs>
     <Notes
       :value.sync="record.notes"
       class="Notes"
-      field-name="备注"
       placeholder="在这输入备注"
     ></Notes>
     <Tags :value.sync="record.tags"></Tags>
+    <Tabs :value.sync="record.type" :data-source="recordTypeList"></Tabs>
   </Layout>
 </template>
 
@@ -61,7 +60,7 @@ export default class Money extends Vue {
 ::v-deep .layout-content {
   display: flex;
   flex-direction: column-reverse;
-  min-height: 100vh;
+  max-height: 100vh;
 }
 ::v-deep .Notes {
   background-color: #f5f5f5;

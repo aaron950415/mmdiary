@@ -1,7 +1,7 @@
 <template>
  <div>
 <label class="notes">
-    <span class="name">{{this.fieldName}}</span>
+    <span class="name"><Icon class="note" name='note'></Icon></span>
     <input type="text" :value="value" @blur="onValueChanged($event.target.value)" :placeholder="this.placeholder">
 </label>
  </div>
@@ -12,7 +12,6 @@ import { Vue,Component, Prop } from "vue-property-decorator";
 @Component
 export default class Notes extends Vue{
  @Prop({default:''}) value!: string
- @Prop({required:true}) fieldName!: string
  @Prop() placeholder?: string
  
  onValueChanged(value: string){
@@ -27,6 +26,10 @@ export default class Notes extends Vue{
     padding-left: 16px;
     display: flex;
     align-items: center;
+    .note{
+        width: 24px;
+        height: 24px;
+    }
     .name{
         padding-right: 16px;
     }
