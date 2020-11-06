@@ -1,13 +1,19 @@
 <template>
   <Layout class-prefix="layout" class="noselect">
     <NumberPad :value.sync="record.amount" @submit="saveRecord"></NumberPad>
+    <Tabs :value.sync="record.type" :data-source="recordTypeList"></Tabs>
+    <Notes
+      :value.sync="record.createAt"
+      class="Notes"
+      placeholder="日期"
+      type="date"
+    ></Notes>
     <Notes
       :value.sync="record.notes"
       class="Notes"
       placeholder="在这输入备注"
     ></Notes>
     <Tags :value.sync="record.tags"></Tags>
-    <Tabs :value.sync="record.type" :data-source="recordTypeList"></Tabs>
   </Layout>
 </template>
 
@@ -33,6 +39,7 @@ export default class Money extends Vue {
     notes: "",
     type: "-",
     amount: 0,
+    createAt:  new Date().toISOString(),
   };
   created() {
     this.$store.commit("fetchRecords");

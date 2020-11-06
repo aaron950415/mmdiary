@@ -75,28 +75,28 @@ export default class NumberPad extends Vue {
     @extend %innerShadow;
     font-size: 36px;
     font-family: Consolas, monospace;
-    padding: 9px 16px;
+    padding: 0px 16px;
     text-align: right;
   }
   .buttons {
     @extend %clearFix;
     > button {
     color: black;
-      border-radius: 50% ;
+      border-radius: 10% ;
       width: 25%;
-      height: 62px;
+      height: 50px;
       padding: 1px;
       float: left;
       background: transparent;
       border: none;
       &.OK {
-        height: 64 * 2px;
+        height: 50 * 2px;
         float: right;
       }
       &.zero {
         width: 25 * 2%;
       }
-      $bg: #f5f11b;
+      $bg: #ece6e6;
       &:nth-child(1) {
         background: darken($bg, 4 * 1%);
       }

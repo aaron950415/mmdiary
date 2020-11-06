@@ -1,7 +1,7 @@
 <template>
   <div class="tags noselect">
-    <div class="new">
-      <button @click="createTag"><Icon class="xinzeng" name='xinzeng'/>新增标签</button>
+    <div class="new" @click="createTag">
+      <button ><Icon class="xinzeng" name='xinzeng'/>新增标签</button>
     </div>
     <ul class="current">
       <li
@@ -52,6 +52,8 @@ export default class NumberPad extends mixins(TagHelper) {
     > li {
       background: #d9d9d9;
       $h: 24px;
+      font-weight: bold;
+      font-size:20px;
       height: $h;
       line-height: $h;
       border-radius: $h/2;
@@ -66,16 +68,16 @@ export default class NumberPad extends mixins(TagHelper) {
   }
   > .new {
     .xinzeng{
-      width: 16px;
-      height: 16px;
+      width: 20px;
+      height: 20px;
       margin-right: 4px;
     }
     padding-top: 16px;
     button {
       background: transparent;
       border: none;
+    border-bottom: 1px solid blue;
       color: rgb(8, 79, 138);
-      border-bottom: 1px solid;
       padding: 0 4px;
     }
   }

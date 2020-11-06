@@ -18,21 +18,23 @@ export default class Date extends Vue {
   @Prop(String) classPrefix?: string;
 
   select(item: DataSourceItem){
+
     this.$emit('update:value',item.value)
   }
+
 
 }
 </script>
 
 <style lang="scss" scoped>
 .tabs {
-  background: #dceb11;
+  background: #dac9c9;
   display: flex;
   text-align: center;
   font-size: 24px;
   &-item {
     width: 50%;
-    height: 64px;
+    height: 50px;
     display: flex;
     justify-content: center;
     align-items: center;

@@ -1,7 +1,15 @@
 <template>
   <Layout class="noselect">
     <Tabs class-prefix="type" :data-source="typeList" :value.sync="type"></Tabs>
-    <ol v-if="groupList.length>0">
+    <div class="chart-wrapper" ref="chartWrapper">
+      <Charts
+        class="chart"
+        :options="options"
+        @update:value="dataType"
+        :chooseType="chooseType"
+      ></Charts>
+    </div>
+    <ol v-if="groupList.length > 0">
       <li v-for="(group, index) in groupList" :key="index">
         <h3 class="tittle">
           {{ beautify(group.tittle) }} <span>总计￥{{ group.total }}</span>
@@ -15,9 +23,7 @@
         </ol>
       </li>
     </ol>
-    <div v-else class="noResult">
-      目前没有相关记录
-    </div>
+    <div v-else class="noResult">目前没有相关记录</div>
   </Layout>
 </template>
 
@@ -27,17 +33,29 @@
 import { Vue, Component } from "vue-property-decorator";
 import Tabs from "@/components/statistic/Tabs.vue";
 import recordTypeList from "@/constants/recordTypeList";
+import Charts from "@/components/statistic/Charts.vue";
 import dayjs from "dayjs";
 import clone from "@/lib/clone";
 @Component({
-  components: { Tabs },
+  components: { Tabs, Charts },
 })
 export default class Statistic2 extends Vue {
+  data() {
+    return {
+      chooseType: "日",
+    };
+  }
+  mounted() {
+    (this.$refs.chartWrapper as HTMLDivElement).scrollLeft = 9999;
+  }
+  dataType(payload: string) {
+    this.chooseType = payload.trim();
+  }
   tagString(tags: Tag[]) {
-    if(tags.length===0){
-      return "没有标签"
-    }else{
-    return  tags.map(t=>t.name).join(",")
+    if (tags.length === 0) {
+      return "没有标签";
+    } else {
+      return tags.map((t) => t.name).join(",");
     }
   }
   beautify(string: string) {
@@ -55,7 +73,102 @@ export default class Statistic2 extends Vue {
       return day.format("YYYY年M月D日");
     }
   }
-
+  get options() {
+    return {
+      grid: {
+        left: 0,
+        right: 0,
+      },
+      xAxis: {
+        type: "category",
+        data: [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "10",
+          "11",
+          "12",
+          "13",
+          "14",
+          "15",
+          "16",
+          "17",
+          "18",
+          "19",
+          "20",
+          "21",
+          "22",
+          "23",
+          "24",
+          "25",
+          "26",
+          "27",
+          "28",
+          "29",
+          "30",
+        ],
+        axisTick: {
+          alignWithLabel: true,
+        },
+        axisLine: {
+          lineStyle: {
+            color: "#666",
+          },
+        },
+      },
+      yAxis: {
+        type: "value",
+        show: false,
+      },
+      series: [
+        {
+          symbol: "circle",
+          symbolSize: 12,
+          itemStyle: { borderWidth: 1, color: "#666" },
+          data: [
+            820,
+            932,
+            901,
+            934,
+            1290,
+            1330,
+            1320,
+            820,
+            932,
+            901,
+            934,
+            1290,
+            1330,
+            1320,
+            820,
+            932,
+            901,
+            934,
+            1290,
+            1330,
+            1320,
+            820,
+            932,
+            901,
+            934,
+            1290,
+            1330,
+            1320,
+            1,
+            1,
+          ],
+          type: "line",
+        },
+      ],
+          tooltip: { show: true, triggerOn: "click", formatter: "{c}", position:'top' },
+    };
+  }
   get recordList() {
     return (this.$store.state as RootState).recordList;
   }
@@ -70,9 +183,9 @@ export default class Statistic2 extends Vue {
       .sort(
         (a, b) => dayjs(b.createAt).valueOf() - dayjs(a.createAt).valueOf()
       );
-      if(newList.length===0){
-return []
-      }
+    if (newList.length === 0) {
+      return [];
+    }
     type Result = { tittle: string; total?: number; items: RecordItem[] }[];
     const result: Result = [
       {
@@ -99,6 +212,7 @@ return []
     });
     return result;
   }
+  chooseType = "周";
   type = "-";
   typeList = recordTypeList;
 
@@ -110,9 +224,9 @@ return []
 
 <style lang="scss" scoped>
 ::v-deep .type-tabs-item {
-  background: #c4c4c4;
+  background: white;
   &.selected {
-    background: #dceb11;
+    background: #dac9c9;
     &::after {
       display: none;
     }
@@ -141,8 +255,14 @@ return []
     color: #999;
   }
 }
-.noResult{
+.noResult {
   padding: 16px;
-  text-align:center;
+  text-align: center;
+}
+.chart {
+  width: 430%;
+}
+.chart-wrapper::-webkit-scrollbar {
+  display: none;
 }
 </style>
