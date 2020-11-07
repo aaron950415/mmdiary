@@ -36,6 +36,7 @@ import recordTypeList from "@/constants/recordTypeList";
 import Charts from "@/components/statistic/Charts.vue";
 import dayjs from "dayjs";
 import clone from "@/lib/clone";
+import _ from "lodash"
 @Component({
   components: { Tabs, Charts },
 })
@@ -46,7 +47,8 @@ export default class Statistic2 extends Vue {
     };
   }
   mounted() {
-    (this.$refs.chartWrapper as HTMLDivElement).scrollLeft = 9999;
+    const chart =(this.$refs.chartWrapper as HTMLDivElement)
+    chart.scrollLeft=chart.scrollWidth
   }
   dataType(payload: string) {
     this.chooseType = payload.trim();
@@ -74,6 +76,18 @@ export default class Statistic2 extends Vue {
     }
   }
   get options() {
+    const today =new Date()
+    const array =[]
+    for(let i=0;i<=29;i++){
+      const dateString=dayjs(today).subtract(i,'day').format('YYYY-MM-DD')
+      const found=_.find(this.recordList,{createAt:dateString})
+      array.push({date: dateString, value: found ? found.amount : 0})
+    }
+      console.log(array)
+    let keys=array.map(item=>item.date)
+    keys=keys.reverse();
+    const values=array.map(item=>item.value)
+    values.reverse()
     return {
       grid: {
         left: 0,
@@ -81,38 +95,7 @@ export default class Statistic2 extends Vue {
       },
       xAxis: {
         type: "category",
-        data: [
-          "1",
-          "2",
-          "3",
-          "4",
-          "5",
-          "6",
-          "7",
-          "8",
-          "9",
-          "10",
-          "11",
-          "12",
-          "13",
-          "14",
-          "15",
-          "16",
-          "17",
-          "18",
-          "19",
-          "20",
-          "21",
-          "22",
-          "23",
-          "24",
-          "25",
-          "26",
-          "27",
-          "28",
-          "29",
-          "30",
-        ],
+        data: keys,
         axisTick: {
           alignWithLabel: true,
         },
@@ -131,38 +114,7 @@ export default class Statistic2 extends Vue {
           symbol: "circle",
           symbolSize: 12,
           itemStyle: { borderWidth: 1, color: "#666" },
-          data: [
-            820,
-            932,
-            901,
-            934,
-            1290,
-            1330,
-            1320,
-            820,
-            932,
-            901,
-            934,
-            1290,
-            1330,
-            1320,
-            820,
-            932,
-            901,
-            934,
-            1290,
-            1330,
-            1320,
-            820,
-            932,
-            901,
-            934,
-            1290,
-            1330,
-            1320,
-            1,
-            1,
-          ],
+          data: values,
           type: "line",
         },
       ],

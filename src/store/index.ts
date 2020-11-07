@@ -3,13 +3,14 @@ import Vue from "vue";
 import Vuex from "vuex";
 import createId from "@/lib/idCreate.ts";
 import router from "@/router";
+import dayjs from "dayjs";
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
   state: {
     //data
     recordList: [],
-    createRecordError:  null,
+    createRecordError: null,
     tagList: [],
     currentTag: undefined,
   } as RootState,
@@ -21,6 +22,7 @@ const store = new Vuex.Store({
     createRecord(state, record: RecordItem) {
       const record2 = clone(record);
       record2.createAt = record2.createAt || new Date().toISOString();
+      dayjs(record2.createAt).format("YYYY-MM-DD");
       state.recordList.push(record2);
       store.commit("saveRecords");
     },
@@ -46,7 +48,7 @@ const store = new Vuex.Store({
       const names = state.tagList.map((item) => item.name);
       if (names.indexOf(name) >= 0) {
         window.alert("duplicated");
-        return
+        return;
       }
       const id = createId().toString();
       state.tagList.push({ id, name: name });
