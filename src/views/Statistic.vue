@@ -86,15 +86,15 @@ export default class Statistic2 extends Vue {
     const array = [];
     for (let i = 0; i <= 29; i++) {
       const dateString = dayjs(today).subtract(i, "day").format("YYYY-MM-DD");
-      const found = _.find(this.recordList, { createAt: dateString });
-      array.push({ date: dateString, value: found ? found.amount : 0 });
+      const found = _.find(this.groupList, { tittle: dateString });
+      array.push({ date: dateString, value: found ? found.total : 0 });
     }
     let keys = array.map((item) => item.date);
     keys = keys.reverse();
     const values = array.map((item) => item.value);
     values.reverse();
     return {
-      grid: {
+      grid: { 
         left: 0,
         right: 0,
       },
