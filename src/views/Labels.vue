@@ -1,8 +1,13 @@
 <template>
   <Layout class="noselect">
     <div class="tags">
-      <router-link class="item" :to="`/labels/edit/${tag.id}`" v-for="tag in tags" :key="tag.id">
-        <span>{{tag.name}}</span>
+      <router-link
+        class="item"
+        :to="`/labels/edit/${tag.id}`"
+        v-for="tag in tags"
+        :key="tag.id"
+      >
+        <span>{{ tag.name }}</span>
         <Icon class="icon" name="right"></Icon>
       </router-link>
     </div>
@@ -23,8 +28,13 @@ export default class Labels extends mixins(TagHelper) {
   }
   beforeCreate() {
     this.$store.commit("fetchTags");
+
+  }
+  mounted() {
+    window.scrollTo(0, 0)
   }
 }
+
 </script>
 
 <style lang="scss" scope>
@@ -38,7 +48,7 @@ export default class Labels extends mixins(TagHelper) {
     align-items: center;
     justify-content: space-between;
     border-bottom: 1px solid #e6e6e6;
-    svg  {
+    svg {
       color: #666;
       margin-right: 8px;
       width: 24px !important;

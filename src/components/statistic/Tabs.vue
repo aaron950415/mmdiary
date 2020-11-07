@@ -27,11 +27,20 @@ export default class Date extends Vue {
 </script>
 
 <style lang="scss" scoped>
+  @media screen and (max-width: 500px) {
+  .tabs {
+    position: fixed;
+    width: 100%;
+    z-index: 11;
+  }
+}
 .tabs {
+
   background: #dac9c9;
   display: flex;
   text-align: center;
   font-size: 24px;
+
   &-item {
     width: 50%;
     height: 50px;

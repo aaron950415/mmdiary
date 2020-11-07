@@ -38,12 +38,15 @@ export default class Charts extends Vue {
 
 <style lang="scss">
 .date {
+  max-width: 500px;
   display: flex;
   margin-top: 20px;
-  margin-left: 50vw;
   position: absolute;
   z-index: 10;
-  transform: translateX(-80px);
+  left: 0;
+  margin-left: 50%;
+  
+  transform: translateX(-50%);
   > li {
     border-radius: 5px;
     text-align: center;
@@ -57,7 +60,13 @@ export default class Charts extends Vue {
   }
 }
 .chart {
-  height: 400px;
+  
+  top:40px;
+  height: 200px;
+  overflow-y: hidden;
+  &-wrapper::-webkit-scrollbar {
+  display: none;
+}
   &-wrapper {
     overflow: auto;
   }

@@ -39,12 +39,16 @@ export default class Money extends Vue {
     notes: "",
     type: "-",
     amount: 0,
-    createAt:  new Date().toISOString(),
+    createAt: new Date().toISOString(),
   };
   created() {
     this.$store.commit("fetchRecords");
   }
-
+  mounted() {
+        const div = this.$refs.pageLoad as HTMLDivElement;
+ 
+        window.scrollTo(0, 100);
+  }
   saveRecord() {
     if (this.record.amount === 0) {
       return;
@@ -52,11 +56,11 @@ export default class Money extends Vue {
     if (this.record.tags.length === 0 || !this.record.tags) {
       return window.alert("请至少选择一个标签");
     }
-    
+
     this.$store.commit("createRecord", this.record);
     if (this.$store.state.createRecordError === null) {
       window.alert("已保存");
-      this.record.notes=''
+      this.record.notes = "";
     }
   }
 }

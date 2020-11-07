@@ -1,10 +1,15 @@
 <template>
   <Layout class="noselect">
-    <Tabs class-prefix="type" :data-source="typeList" :value.sync="type"></Tabs>
+    <Tabs
+      class="tab"
+      class-prefix="type"
+      :data-source="typeList"
+      :value.sync="type"
+    ></Tabs>
     <div class="chart-wrapper" ref="chartWrapper">
       <Charts
         class="chart"
-        :options="options"
+        :options="chartOptions"
         @update:value="dataType"
         :chooseType="chooseType"
       ></Charts>
@@ -36,7 +41,7 @@ import recordTypeList from "@/constants/recordTypeList";
 import Charts from "@/components/statistic/Charts.vue";
 import dayjs from "dayjs";
 import clone from "@/lib/clone";
-import _ from "lodash"
+import _ from "lodash";
 @Component({
   components: { Tabs, Charts },
 })
@@ -47,8 +52,9 @@ export default class Statistic2 extends Vue {
     };
   }
   mounted() {
-    const chart =(this.$refs.chartWrapper as HTMLDivElement)
-    chart.scrollLeft=chart.scrollWidth
+    window.scrollTo(0, 0);
+    const chart = this.$refs.chartWrapper as HTMLDivElement;
+    chart.scrollLeft = chart.scrollWidth;
   }
   dataType(payload: string) {
     this.chooseType = payload.trim();
@@ -75,19 +81,18 @@ export default class Statistic2 extends Vue {
       return day.format("YYYY年M月D日");
     }
   }
-  get options() {
-    const today =new Date()
-    const array =[]
-    for(let i=0;i<=29;i++){
-      const dateString=dayjs(today).subtract(i,'day').format('YYYY-MM-DD')
-      const found=_.find(this.recordList,{createAt:dateString})
-      array.push({date: dateString, value: found ? found.amount : 0})
+  get chartOptions() {
+    const today = new Date();
+    const array = [];
+    for (let i = 0; i <= 29; i++) {
+      const dateString = dayjs(today).subtract(i, "day").format("YYYY-MM-DD");
+      const found = _.find(this.recordList, { createAt: dateString });
+      array.push({ date: dateString, value: found ? found.amount : 0 });
     }
-      console.log(array)
-    let keys=array.map(item=>item.date)
-    keys=keys.reverse();
-    const values=array.map(item=>item.value)
-    values.reverse()
+    let keys = array.map((item) => item.date);
+    keys = keys.reverse();
+    const values = array.map((item) => item.value);
+    values.reverse();
     return {
       grid: {
         left: 0,
@@ -104,6 +109,11 @@ export default class Statistic2 extends Vue {
             color: "#666",
           },
         },
+        axisLabel: {
+          formatter: function (value: string) {
+            return value.substr( 5);
+          },
+        },
       },
       yAxis: {
         type: "value",
@@ -118,7 +128,12 @@ export default class Statistic2 extends Vue {
           type: "line",
         },
       ],
-          tooltip: { show: true, triggerOn: "click", formatter: "{c}", position:'top' },
+      tooltip: {
+        show: true,
+        triggerOn: "click",
+        formatter: "{c}",
+        position: "top",
+      },
     };
   }
   get recordList() {
@@ -207,12 +222,23 @@ export default class Statistic2 extends Vue {
     color: #999;
   }
 }
+::v-deep .tab {
+  position: fixed;
+  width: 100%;
+  max-width: 500px;
+  z-index: 11;
+}
+
 .noResult {
   padding: 16px;
   text-align: center;
 }
+
 .chart {
   width: 430%;
+}
+.chart-wrapper {
+  padding-top: 48px;
 }
 .chart-wrapper::-webkit-scrollbar {
   display: none;

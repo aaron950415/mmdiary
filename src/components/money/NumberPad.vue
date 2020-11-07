@@ -1,5 +1,5 @@
 <template>
-  <div class="numberPad noselect">
+  <div class="numberPad">
     <div class="output">{{output}}</div>
     <div @click="choosed" class="buttons">
       <button>1</button>

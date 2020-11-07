@@ -15,10 +15,17 @@ export default{
 <style lang="scss" scoped>
  @import "~@/assets/style/helper.scss";
   nav{
+    position: fixed;
+    left: 0;
+    bottom: 0;width: 100%;
+    max-width: 500px;
+    margin-left: 50%;
+    transform: translateX(-50%);
     display: flex;
     box-shadow: 0 0 3px rgba(0, 0, 0, 0.25);
     flex-direction: row;
     font-size: 12px;
+    background-color: #fff;
     > .item{  
       padding: 12px;
       width: 33.3333333%;
