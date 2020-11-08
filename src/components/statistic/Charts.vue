@@ -24,19 +24,19 @@ export default class Charts extends Vue {
   @Prop() chooseType?: string;
   @Prop() options?: any;
   chart?: any;
+
   mounted() {
     this.chart = echarts.init(this.$refs.wrapper as HTMLDivElement);
     this.chart.setOption(this.options);
   }
-  @Watch('options')
-  onOptionsChange(newValue: any){
-      this.chart.setOption(newValue);
-    
-  }
-  
-  
-  date = ["日", "月"];
+  @Watch("options")
+  onOptionsChange() {
+    this.chart.setOption(this.options);
 
+    this.chart.resize();
+  }
+
+  date = ["日", "月"];
   dateChange(value: string) {
     this.$emit("update:value", value);
   }
@@ -66,6 +66,7 @@ export default class Charts extends Vue {
     background: blue;
   }
 }
+
 .chart {
   top: 40px;
   height: 200px;
@@ -75,6 +76,7 @@ export default class Charts extends Vue {
   }
   &-wrapper {
     overflow: auto;
+    overflow-y: hidden;
   }
 }
 </style>

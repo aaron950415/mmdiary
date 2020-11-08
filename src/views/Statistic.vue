@@ -8,8 +8,16 @@
     ></Tabs>
     <div class="chart-wrapper" ref="chartWrapper">
       <Charts
-        class="chart"
-        :options="chartOptions"
+        v-if="chooseType === '月'"
+        style="width: 200%"
+        :options="chartMonthOptions"
+        @update:value="dataType"
+        :chooseType="chooseType"
+      ></Charts>
+      <Charts
+        v-else
+        style="width: 430%"
+        :options="chartDayOptions"
         @update:value="dataType"
         :chooseType="chooseType"
       ></Charts>
@@ -35,20 +43,21 @@
 <script lang="ts">
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @typescript-eslint/member-delimiter-style */
-import { Vue, Component } from "vue-property-decorator";
+import { Vue, Component, Watch } from "vue-property-decorator";
 import Tabs from "@/components/statistic/Tabs.vue";
 import recordTypeList from "@/constants/recordTypeList";
 import Charts from "@/components/statistic/Charts.vue";
 import dayjs from "dayjs";
 import clone from "@/lib/clone";
 import _ from "lodash";
+import { set } from "vue/types/umd";
 @Component({
   components: { Tabs, Charts },
 })
 export default class Statistic2 extends Vue {
   data() {
     return {
-      chooseType: "日",
+      chooseType: "月",
     };
   }
   mounted() {
@@ -56,8 +65,14 @@ export default class Statistic2 extends Vue {
     const chart = this.$refs.chartWrapper as HTMLDivElement;
     chart.scrollLeft = chart.scrollWidth;
   }
+  updated() {
+    const chart = this.$refs.chartWrapper as HTMLDivElement;
+    chart.scrollLeft = chart.scrollWidth;
+    //console.log(this.chooseType);
+  }
   dataType(payload: string) {
     this.chooseType = payload.trim();
+    return this.chooseType;
   }
   tagString(tags: Tag[]) {
     if (tags.length === 0) {
@@ -81,7 +96,7 @@ export default class Statistic2 extends Vue {
       return day.format("YYYY年M月D日");
     }
   }
-  get chartOptions() {
+  get chartDayOptions() {
     const today = new Date();
     const array = [];
     for (let i = 0; i <= 29; i++) {
@@ -94,7 +109,7 @@ export default class Statistic2 extends Vue {
     const values = array.map((item) => item.value);
     values.reverse();
     return {
-      grid: { 
+      grid: {
         left: 0,
         right: 0,
       },
@@ -111,7 +126,72 @@ export default class Statistic2 extends Vue {
         },
         axisLabel: {
           formatter: function (value: string) {
-            return value.substr( 5);
+            return value.substr(5);
+          },
+        },
+      },
+      yAxis: {
+        type: "value",
+        show: false,
+      },
+      series: [
+        {
+          symbol: "circle",
+          symbolSize: 12,
+          itemStyle: { borderWidth: 1, color: "#666" },
+          data: values,
+          type: "line",
+        },
+      ],
+      tooltip: {
+        show: true,
+        triggerOn: "click",
+        formatter: "{c}",
+        position: "top",
+      },
+    };
+  }
+  get chartMonthOptions() {
+    const today = new Date();
+    const array = [];
+    const found = this.groupList.map(item=>item.tittle.substr(0,7))
+    const total:  any = this.groupList.map(item=>item.total) 
+    for (let i = 0; i <= 11; i++) {
+    let c=0;
+    let count=0;
+      const dateString = dayjs(today).subtract(i, "M").format("YYYY-MM");
+        found.map(item=>{
+          if(item===dateString){
+            c+=total[count]
+          }
+          count++;
+        })
+      array.push({ date: dayjs(dateString).format("M月"), value: c ? c : 0 });
+    }
+    let keys = array.map((item) => item.date.substr(0, 5));
+    keys = keys.reverse();
+    const values = array.map((item) => item.value);
+    values.reverse();
+  
+    return {
+      grid: {
+        left: 0,
+        right: 0,
+      },
+      xAxis: {
+        type: "category",
+        data: keys,
+        axisTick: {
+          alignWithLabel: true,
+        },
+        axisLine: {
+          lineStyle: {
+            color: "#666",
+          },
+        },
+        axisLabel: {
+          formatter: function (value: string) {
+            return value;
           },
         },
       },
@@ -179,7 +259,7 @@ export default class Statistic2 extends Vue {
     });
     return result;
   }
-  chooseType = "周";
+  chooseType = "月";
   type = "-";
   typeList = recordTypeList;
 
@@ -234,11 +314,14 @@ export default class Statistic2 extends Vue {
   text-align: center;
 }
 
-.chart {
-  width: 430%;
-}
 .chart-wrapper {
   padding-top: 48px;
+  > .chart_p {
+    width: 430%;
+  }
+  > .chart_p2 {
+    width: 100%;
+  }
 }
 .chart-wrapper::-webkit-scrollbar {
   display: none;

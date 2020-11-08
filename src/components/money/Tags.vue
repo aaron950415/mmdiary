@@ -1,7 +1,7 @@
 <template>
   <div class="tags noselect">
-    <div class="new" @click="createTag">
-      <button ><Icon class="xinzeng" name='xinzeng'/>新增标签</button>
+    <div class="new" >
+      <button @click="createTag"><Icon class="xinzeng" name='xinzeng'/>新增标签</button>
     </div>
     <ul class="current">
       <li
