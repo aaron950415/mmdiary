@@ -29,7 +29,6 @@ export default class Date extends Vue {
 <style lang="scss" scoped>
   @media screen and (max-width: 500px) {
   .tabs {
-    position: fixed;
     width: 100%;
     z-index: 11;
   }
@@ -44,7 +43,6 @@ export default class Date extends Vue {
   &-item {
     width: 50%;
     height: 50px;
-    display: flex;
     justify-content: center;
     align-items: center;
     position: relative;
