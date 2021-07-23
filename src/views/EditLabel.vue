@@ -2,14 +2,14 @@
   <Layout class="noselect">
     <div class="navBar">
       <Icon class="leftIcon" name="left" @click.native="goBack"></Icon>
-      <span class="tittle">标签编辑</span>
+      <span class="tittle">label edit</span>
       <span class="rightIcon"></span>
     </div>
     <div class="form-wrapper">
-      <Notes :value="tag.name" @update:value="update" field-name="标签名" placeholder="请输入标签名"></Notes>
+      <Notes :value="tag.name" @update:value="update" field-name="标签名" placeholder="please entry label"></Notes>
     </div>
     <div class="button-wrapper">
-      <Button @click="remove">删除标签</Button>
+      <Button @click="remove">label delete</Button>
     </div>
   </Layout>
 </template>

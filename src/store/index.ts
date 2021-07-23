@@ -22,7 +22,7 @@ const store = new Vuex.Store({
     createRecord(state, record: RecordItem) {
       const record2 = clone(record);
       record2.createAt = record2.createAt || new Date().toISOString();
-      dayjs(record2.createAt).format("YYYY-MM-DD");
+      dayjs(record2.createAt).format("DD-MMM-YYYY");
       state.recordList.push(record2);
       store.commit("saveRecords");
     },
@@ -35,10 +35,10 @@ const store = new Vuex.Store({
     fetchTags(state) {
       state.tagList = JSON.parse(localStorage.getItem("tagList") || "[]");
       if (!state.tagList || state.tagList.length === 0) {
-        store.commit("createTag", "衣");
-        store.commit("createTag", "食");
-        store.commit("createTag", "住");
-        store.commit("createTag", "行");
+        store.commit("createTag", "cloth");
+        store.commit("createTag", "eating");
+        store.commit("createTag", "occupancy");
+        store.commit("createTag", "travel");
       }
     },
     setCurrentTag(state, id: string) {
@@ -65,10 +65,10 @@ const store = new Vuex.Store({
       if (index >= 0) {
         state.tagList.splice(index, 1);
         store.commit("saveTags");
-        window.alert("删除成功");
+        window.alert("deleted sucessful");
         router.back();
       } else {
-        window.alert("删除失败");
+        window.alert("deleted fall");
       }
     },
     updateTag(state, payload: { id: string; name: string }) {

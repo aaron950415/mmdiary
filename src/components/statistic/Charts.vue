@@ -36,7 +36,7 @@ export default class Charts extends Vue {
     this.chart.resize();
   }
 
-  date = ["日", "月"];
+  date = ["day", "month"];
   dateChange(value: string) {
     this.$emit("update:value", value);
   }

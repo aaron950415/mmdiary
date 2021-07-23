@@ -8,7 +8,7 @@
     ></Tabs>
     <div class="chart-wrapper" ref="chartWrapper">
       <Charts
-        v-if="chooseType === '月'"
+        v-if="chooseType === 'month'"
         style="width: 200%"
         :options="chartMonthOptions"
         @update:value="dataType"
@@ -25,18 +25,18 @@
     <ol v-if="groupList.length > 0">
       <li v-for="(group, index) in groupList" :key="index">
         <h3 class="tittle">
-          {{ beautify(group.tittle) }} <span>总计￥{{ group.total }}</span>
+          {{ beautify(group.tittle) }} <span>totally ${{ group.total }}</span>
         </h3>
         <ol>
           <li class="record" v-for="item in group.items" :key="item.id">
             <span>{{ tagString(item.tags) }}</span>
             <span class="notes">{{ item.notes }}</span>
-            <span>￥{{ item.amount }}</span>
+            <span>${{ item.amount }}</span>
           </li>
         </ol>
       </li>
     </ol>
-    <div v-else class="noResult">目前没有相关记录</div>
+    <div v-else class="noResult">Recording Not Found</div>
   </Layout>
 </template>
 
@@ -57,7 +57,7 @@ import { set } from "vue/types/umd";
 export default class Statistic2 extends Vue {
   data() {
     return {
-      chooseType: "月",
+      chooseType: "month",
     };
   }
   mounted() {
@@ -76,7 +76,7 @@ export default class Statistic2 extends Vue {
   }
   tagString(tags: Tag[]) {
     if (tags.length === 0) {
-      return "没有标签";
+      return "label is null";
     } else {
       return tags.map((t) => t.name).join(",");
     }
@@ -85,22 +85,20 @@ export default class Statistic2 extends Vue {
     const day = dayjs(string);
     const now = dayjs();
     if (day.isSame(now, "day")) {
-      return "今天";
+      return "today";
     } else if (day.isSame(now.subtract(1, "day"), "day")) {
-      return "昨天";
-    } else if (day.isSame(now.subtract(2, "day"), "day")) {
-      return "前天";
-    } else if (day.isSame(now, "year")) {
-      return day.format("MM月D日");
+      return "yesterday";
+    }  else if (day.isSame(now, "year")) {
+      return day.format("MMM D");
     } else {
-      return day.format("YYYY年M月D日");
+      return day.format("MMM D YYYY");
     }
   }
   get chartDayOptions() {
     const today = new Date();
     const array = [];
     for (let i = 0; i <= 29; i++) {
-      const dateString = dayjs(today).subtract(i, "day").format("YYYY-MM-DD");
+      const dateString = dayjs(today).subtract(i, "day").format("YYYY-MMM DD");
       const found = _.find(this.groupList, { tittle: dateString });
       array.push({ date: dateString, value: found ? found.total : 0 });
     }
@@ -166,7 +164,7 @@ export default class Statistic2 extends Vue {
           }
           count++;
         })
-      array.push({ date: dayjs(dateString).format("M月"), value: c ? c : 0 });
+      array.push({ date: dayjs(dateString).format("MMM"), value: c ? c : 0 });
     }
     let keys = array.map((item) => item.date.substr(0, 5));
     keys = keys.reverse();
@@ -247,7 +245,7 @@ export default class Statistic2 extends Vue {
         last.items.push(current);
       } else {
         result.push({
-          tittle: dayjs(current.createAt).format("YYYY-MM-DD"),
+          tittle: dayjs(current.createAt).format("YYYY-MMM-DD"),
           items: [current],
         });
       }
@@ -259,7 +257,7 @@ export default class Statistic2 extends Vue {
     });
     return result;
   }
-  chooseType = "月";
+  chooseType = "month";
   type = "-";
   typeList = recordTypeList;
 

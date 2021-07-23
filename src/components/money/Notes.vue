@@ -32,7 +32,7 @@ export default class Notes extends Vue {
   }
 
       modify(isoString: string){
-          return dayjs(isoString).format('YYYY-MM-DD')
+          return dayjs(isoString).format('DD-MMM-YYYY')
       }
 }
 </script>

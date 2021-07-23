@@ -5,13 +5,13 @@
     <Notes
       :value.sync="record.createAt"
       class="Notes"
-      placeholder="日期"
+      placeholder="date"
       type="date"
     ></Notes>
     <Notes
       :value.sync="record.notes"
       class="Notes"
-      placeholder="在这输入备注"
+      placeholder="Enter notes"
     ></Notes>
     <Tags :value.sync="record.tags"></Tags>
   </Layout>
@@ -54,12 +54,12 @@ export default class Money extends Vue {
       return;
     }
     if (this.record.tags.length === 0 || !this.record.tags) {
-      return window.alert("请至少选择一个标签");
+      return window.alert("at least choose one tag");
     }
 
     this.$store.commit("createRecord", this.record);
     if (this.$store.state.createRecordError === null) {
-      window.alert("已保存");
+      window.alert("saved");
       this.record.notes = "";
     }
   }

@@ -13,7 +13,7 @@ const recordStore={
   createRecord(record: RecordItem) {
     const record2: RecordItem=clone(record)
     record2.createAt= record2.createAt || new Date().toISOString();
-    dayjs(record2.createAt).format("YYYY-MM-DD");
+    dayjs(record2.createAt).format("DD-MMM-YYYY");
     this.recordList&&this.recordList.push(record2)
     recordStore.saveRecords();
   },

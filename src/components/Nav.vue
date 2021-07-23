@@ -1,8 +1,8 @@
 <template>
   <nav>
-    <router-link class="item" to="/labels" active-class="selected"><Icon class="labels" name='labels'></Icon>标签</router-link>
-    <router-link class="item" to="/money" active-class="selected"><Icon class="money" name='money'></Icon>记账</router-link>
-    <router-link class="item" to="/statistic" active-class="selected"><Icon class="statistic" name='statistic'></Icon>统计</router-link>
+    <router-link class="item" to="/labels" active-class="selected"><Icon class="labels" name='labels'></Icon>label</router-link>
+    <router-link class="item" to="/money" active-class="selected"><Icon class="money" name='money'></Icon>money</router-link>
+    <router-link class="item" to="/statistic" active-class="selected"><Icon class="statistic" name='statistic'></Icon>statistic</router-link>
   </nav>
 </template>
 
