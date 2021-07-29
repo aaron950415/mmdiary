@@ -25,7 +25,7 @@
     <ol v-if="groupList.length > 0">
       <li v-for="(group, index) in groupList" :key="index">
         <h3 class="tittle">
-          {{ beautify(group.tittle) }} <span>totally ${{ group.total }}</span>
+          {{group.tittle.substr(5, 8) }} <span>totally ${{ group.total }}</span>
         </h3>
         <ol>
           <li class="record" v-for="item in group.items" :key="item.id">
@@ -68,7 +68,6 @@ export default class Statistic2 extends Vue {
   updated() {
     const chart = this.$refs.chartWrapper as HTMLDivElement;
     chart.scrollLeft = chart.scrollWidth;
-    //console.log(this.chooseType);
   }
   dataType(payload: string) {
     this.chooseType = payload.trim();
@@ -84,11 +83,12 @@ export default class Statistic2 extends Vue {
   beautify(string: string) {
     const day = dayjs(string);
     const now = dayjs();
+    console.log(day,now);
     if (day.isSame(now, "day")) {
       return "today";
     } else if (day.isSame(now.subtract(1, "day"), "day")) {
       return "yesterday";
-    }  else if (day.isSame(now, "year")) {
+    } else if (day.isSame(now, "year")) {
       return day.format("MMM D");
     } else {
       return day.format("MMM D YYYY");
@@ -98,7 +98,7 @@ export default class Statistic2 extends Vue {
     const today = new Date();
     const array = [];
     for (let i = 0; i <= 29; i++) {
-      const dateString = dayjs(today).subtract(i, "day").format("YYYY-MMM DD");
+      const dateString = dayjs(today).subtract(i, "day").format("YYYY-MMM-DD");
       const found = _.find(this.groupList, { tittle: dateString });
       array.push({ date: dateString, value: found ? found.total : 0 });
     }
@@ -152,25 +152,26 @@ export default class Statistic2 extends Vue {
   get chartMonthOptions() {
     const today = new Date();
     const array = [];
-    const found = this.groupList.map(item=>item.tittle.substr(0,7))
-    const total:  any = this.groupList.map(item=>item.total) 
+    const found = this.groupList.map((item) => item.tittle.substr(0, 8));
+    const total: any = this.groupList.map((item) => item.total);
     for (let i = 0; i <= 11; i++) {
-    let c=0;
-    let count=0;
-      const dateString = dayjs(today).subtract(i, "M").format("YYYY-MM");
-        found.map(item=>{
-          if(item===dateString){
-            c+=total[count]
-          }
-          count++;
-        })
-      array.push({ date: dayjs(dateString).format("MMM"), value: c ? c : 0 });
+      let c = 0;
+      let count = 0;
+      const dateString = dayjs(today).subtract(i, "M").format("YYYY-MMM");
+      found.map((item) => {
+        if (item === dateString) {
+          c += total[count];
+        }
+        count++;
+      });
+      array.push({ date: dateString, value: c ? c : 0 });
     }
-    let keys = array.map((item) => item.date.substr(0, 5));
+    let keys = array.map((item) => item.date.substr(5, 8));
+
     keys = keys.reverse();
     const values = array.map((item) => item.value);
     values.reverse();
-  
+
     return {
       grid: {
         left: 0,
@@ -225,16 +226,14 @@ export default class Statistic2 extends Vue {
 
     const newList = clone(recordList)
       .filter((r) => r.type === this.type)
-      .sort(
-        (a, b) => dayjs(b.createAt).valueOf() - dayjs(a.createAt).valueOf()
-      );
+      .sort((a, b) => dayjs(b.createAt).valueOf() - dayjs(a.createAt).valueOf());
     if (newList.length === 0) {
       return [];
     }
     type Result = { tittle: string; total?: number; items: RecordItem[] }[];
     const result: Result = [
       {
-        tittle: dayjs(newList[0].createAt).format("YYYY-MM-DD"),
+        tittle: dayjs(newList[0].createAt).format("YYYY-MMM-DD"),
         items: [newList[0]],
       },
     ];
